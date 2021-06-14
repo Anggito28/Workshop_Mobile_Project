@@ -8,18 +8,23 @@
     <fragment
         android:id="@+id/navigation_home"
         android:name="com.kelompok2.rudibonsai.ui.home.HomeFragment"
-        android:label="@string/title_home"
+        android:label="@string/app_name"
         tools:layout="@layout/fragment_home" />
 
     <fragment
-        android:id="@+id/navigation_dashboard"
-        android:name="com.kelompok2.rudibonsai.ui.dashboard.DashboardFragment"
-        android:label="@string/title_dashboard"
-        tools:layout="@layout/fragment_dashboard" />
+        android:id="@+id/navigation_cart"
+        android:name="com.kelompok2.rudibonsai.ui.cart.CartFragment"
+        android:label="@string/cart"
+        tools:layout="@layout/fragment_cart" />
 
     <fragment
-        android:id="@+id/navigation_notifications"
-        android:name="com.kelompok2.rudibonsai.ui.notifications.NotificationsFragment"
-        android:label="@string/title_notifications"
-        tools:layout="@layout/fragment_notifications" />
+        android:id="@+id/navigation_account"
+        android:name="com.kelompok2.rudibonsai.ui.account.AccountFragment"
+        android:label="@string/account"
+        tools:layout="@layout/fragment_account" />
+    <fragment
+        android:id="@+id/navigation_order"
+        android:name="com.kelompok2.rudibonsai.ui.order.OrderFragment"
+        android:label="@string/order"
+        tools:layout="@layout/fragment_order" />
 </navigation>

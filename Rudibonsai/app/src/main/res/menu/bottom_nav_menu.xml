@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
         android:id="@+id/navigation_home"
@@ -7,16 +8,16 @@
         android:title="@string/home" />
 
     <item
-        android:id="@+id/menu_cart"
+        android:id="@+id/navigation_cart"
         android:icon="@drawable/ic_baseline_shopping_cart_24"
         android:title="@string/cart" />
     <item
-        android:id="@+id/menu_order"
+        android:id="@+id/navigation_order"
         android:icon="@drawable/ic_baseline_receipt_24"
         android:title="@string/order" />
 
     <item
-        android:id="@+id/navigation_notifications"
+        android:id="@+id/navigation_account"
         android:icon="@drawable/ic_baseline_account_circle_24"
         android:title="@string/account" />
 
