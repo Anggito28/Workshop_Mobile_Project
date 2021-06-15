@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/home_search_menu"
+        android:icon="@drawable/ic_baseline_search_24"
+        android:title="@string/search"
+        android:orderInCategory="1"
+        app:showAsAction="always|collapseActionView"
+        app:actionViewClass="androidx.appcompat.widget.SearchView"
+        />
+    <item
+        android:id="@+id/home_category_menu"
+        android:icon="@drawable/ic_baseline_tune_24"
+        android:title="@string/category"
+        android:orderInCategory="2"
+        app:showAsAction="always" />
+</menu>
