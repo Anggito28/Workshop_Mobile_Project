@@ -1,131 +1,131 @@
 package com.kelompok2.rudibonsai.ui.login;
 
-import android.app.Activity;
-
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
-
+import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
-
-import androidx.annotation.Nullable;
-import androidx.annotation.StringRes;
-import androidx.appcompat.app.AppCompatActivity;
-
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.view.KeyEvent;
+import android.util.Log;
 import android.view.View;
-import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.kelompok2.rudibonsai.MainActivity;
 import com.kelompok2.rudibonsai.R;
-import com.kelompok2.rudibonsai.ui.login.LoginViewModel;
-import com.kelompok2.rudibonsai.ui.login.LoginViewModelFactory;
+import com.kelompok2.rudibonsai.api.ApiClient;
+import com.kelompok2.rudibonsai.api.LoginInterface;
+import com.kelompok2.rudibonsai.model.login.LoginData;
+import com.kelompok2.rudibonsai.model.login.LoginSuccess;
+import com.kelompok2.rudibonsai.session.SessionManager;
+import com.kelompok2.rudibonsai.ui.register.RegisterActivity;
 
-public class LoginActivity extends AppCompatActivity {
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
-    private LoginViewModel loginViewModel;
+public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
+
+    private ActionBar actionBar;
+    private EditText etEmail, etPassword;
+    private Button btnLogin;
+    private String email, password;
+    private LoginInterface loginInterface;
+    private SessionManager sessionManager;
+    private TextView linkRegister;
+    private ProgressDialog loading;
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        loginViewModel = new ViewModelProvider(this, new LoginViewModelFactory())
-                .get(LoginViewModel.class);
+        actionBar = getSupportActionBar();
+        actionBar.setTitle(R.string.login);
 
-        final EditText usernameEditText = findViewById(R.id.username);
-        final EditText passwordEditText = findViewById(R.id.password);
-        final Button loginButton = findViewById(R.id.login);
-        final ProgressBar loadingProgressBar = findViewById(R.id.loading);
+        etEmail = findViewById(R.id.et_login_email);
+        etPassword = findViewById(R.id.et_login_password);
+        btnLogin = findViewById(R.id.btn_login_login);
+        linkRegister = findViewById(R.id.link_register);
 
-        loginViewModel.getLoginFormState().observe(this, new Observer<LoginFormState>() {
-            @Override
-            public void onChanged(@Nullable LoginFormState loginFormState) {
-                if (loginFormState == null) {
-                    return;
-                }
-                loginButton.setEnabled(loginFormState.isDataValid());
-                if (loginFormState.getUsernameError() != null) {
-                    usernameEditText.setError(getString(loginFormState.getUsernameError()));
-                }
-                if (loginFormState.getPasswordError() != null) {
-                    passwordEditText.setError(getString(loginFormState.getPasswordError()));
-                }
-            }
-        });
+        loading = new ProgressDialog(LoginActivity.this);
+        loading.setTitle("Memuat");
+        loading.setMessage("Mohon tunggu...");
+        loading.setCancelable(false);
 
-        loginViewModel.getLoginResult().observe(this, new Observer<LoginResult>() {
-            @Override
-            public void onChanged(@Nullable LoginResult loginResult) {
-                if (loginResult == null) {
-                    return;
-                }
-                loadingProgressBar.setVisibility(View.GONE);
-                if (loginResult.getError() != null) {
-                    showLoginFailed(loginResult.getError());
-                }
-                if (loginResult.getSuccess() != null) {
-                    updateUiWithUser(loginResult.getSuccess());
-                }
-                setResult(Activity.RESULT_OK);
-
-                //Complete and destroy login activity once successful
-                finish();
-            }
-        });
-
-        TextWatcher afterTextChangedListener = new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                // ignore
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                // ignore
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                loginViewModel.loginDataChanged(usernameEditText.getText().toString(),
-                        passwordEditText.getText().toString());
-            }
-        };
-        usernameEditText.addTextChangedListener(afterTextChangedListener);
-        passwordEditText.addTextChangedListener(afterTextChangedListener);
-        passwordEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if (actionId == EditorInfo.IME_ACTION_DONE) {
-                    loginViewModel.login(usernameEditText.getText().toString(),
-                            passwordEditText.getText().toString());
-                }
-                return false;
-            }
-        });
-
-        loginButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                loadingProgressBar.setVisibility(View.VISIBLE);
-                loginViewModel.login(usernameEditText.getText().toString(),
-                        passwordEditText.getText().toString());
-            }
-        });
+        btnLogin.setOnClickListener(this);
+        linkRegister.setOnClickListener(this);
     }
 
-    private void updateUiWithUser(LoggedInUserView model) {
-        String welcome = getString(R.string.welcome) + model.getDisplayName();
-        // TODO : initiate successful logged in experience
-        Toast.makeText(getApplicationContext(), welcome, Toast.LENGTH_LONG).show();
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.btn_login_login:
+                loading.show();
+
+                email = etEmail.getText().toString();
+                password = etPassword.getText().toString();
+
+                login(email, password);
+
+                break;
+
+            case R.id.link_register:
+                moveToRegister();
+
+                break;
+        }
     }
 
-    private void showLoginFailed(@StringRes Integer errorString) {
-        Toast.makeText(getApplicationContext(), errorString, Toast.LENGTH_SHORT).show();
+    private void moveToRegister() {
+        Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
+        startActivity(intent);
+        finish();
+    }
+
+    private void login(String email, String password) {
+        loginInterface = ApiClient.getClient().create(LoginInterface.class);
+        Call<JsonElement> call = loginInterface.loginResponse(email, password);
+        call.enqueue(new Callback<JsonElement>() {
+            @Override
+            public void onResponse(Call<JsonElement> call, Response<JsonElement> response) {
+                if (response.isSuccessful()){
+                    JsonElement res = response.body();
+                    LoginSuccess loginSuccess = new Gson().fromJson(res.getAsJsonObject(), LoginSuccess.class);
+                    LoginData loginData = loginSuccess.getData();
+
+                    sessionManager = new SessionManager(LoginActivity.this);
+                    sessionManager.createLoginSession(loginData);
+
+                    loading.dismiss();
+
+                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                    startActivity(intent);
+                    finish();
+
+//                    Toast.makeText(LoginActivity.this, "oke", Toast.LENGTH_SHORT).show();
+
+                } else {
+                    Log.i("tes", String.valueOf(response.raw()));
+                    Log.i("tes", String.valueOf(response.body()));
+                    Log.i("tes", String.valueOf(response.errorBody()));
+
+                    loading.dismiss();
+
+                    Toast.makeText(LoginActivity.this, "not oke", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonElement> call, Throwable t) {
+                Toast.makeText(LoginActivity.this, t.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                t.printStackTrace();
+                loading.dismiss();
+            }
+        });
+
     }
 }
