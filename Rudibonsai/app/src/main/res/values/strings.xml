@@ -29,4 +29,8 @@
     <string name="password">Password</string>
     <string name="login_to_register">Belum punya akun?</string>
     <string name="password_confirm">Konfirmasi Password</string>
+    <string name="gender">Jenis Kelamin</string>
+    <string name="address">Alamat</string>
+    <string name="logout">Keluar</string>
+    <string name="about">Tentang Aplikasi</string>
 </resources>

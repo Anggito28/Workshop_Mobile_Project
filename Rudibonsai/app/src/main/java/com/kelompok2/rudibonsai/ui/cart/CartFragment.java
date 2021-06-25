@@ -76,7 +76,6 @@ public class CartFragment extends Fragment implements CartAdapter.SubtotalListen
     private void fetchCartItems() {
         String token = "Bearer " + sessionManager.getTOKEN();
         progressDialog.show();
-//        Log.i("token", token);
 
         cartInterface = ApiClient.getClient().create(CartInterface.class);
         Call<CartResponse> cartCall = cartInterface.getCarts(token);

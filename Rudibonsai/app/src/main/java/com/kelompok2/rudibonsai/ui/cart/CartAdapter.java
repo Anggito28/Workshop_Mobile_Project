@@ -18,6 +18,7 @@ import com.kelompok2.rudibonsai.R;
 import com.kelompok2.rudibonsai.constant.ConstantValue;
 import com.kelompok2.rudibonsai.model.cart.CartItemQuantity;
 import com.kelompok2.rudibonsai.model.cart.CartsItem;
+import com.kelompok2.rudibonsai.model.cart.ProductImagesItem;
 import com.kelompok2.rudibonsai.utils.MyFormatter;
 
 import org.jetbrains.annotations.NotNull;
@@ -58,15 +59,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViewHolder> 
         holder.tvStock.setText("Stok : " + String.valueOf(mData.get(position).getProduct().getStock()));
         holder.tvPrice.setText(MyFormatter.idrFormat(mData.get(position).getProduct().getPrice()));
         holder.etQuantity.setText(String.valueOf(quantities.get(position).getQuantity()));
-
-        String imgName = mData.get(position).getProductImages().get(1).getName();
-        String imgPath = ConstantValue.BASE_URL + "products/images/" + imgName;
-
-//        Log.i("foto produk", imgPath);
-
-        Glide.with(mContext)
-                .load(imgPath)
-                .into(holder.ivProduct);
+        setProductImage(holder, position);
 
         setSubtotalItem(position);
         countSubtotalAmount();
@@ -93,6 +86,23 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViewHolder> 
         });
     }
 
+    private void setProductImage(MyViewHolder holder, int position) {
+        String imgName = mData.get(position).getProductImages().get(0).getName();
+        List<ProductImagesItem> productImages = mData.get(position).getProductImages();
+
+        for (ProductImagesItem item : productImages){
+            if (item.getIsPrimary() != null){
+                imgName = item.getName();
+            }
+        }
+
+        String imgPath = ConstantValue.BASE_URL + "products/images/" + imgName;
+
+        Glide.with(mContext)
+                .load(imgPath)
+                .into(holder.ivProduct);
+    }
+
     private void countQuantity() {
         int total = 0;
         for (CartItemQuantity item : quantities){
@@ -107,8 +117,6 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViewHolder> 
         for (int item : subtotalItem){
             total += item;
         }
-
-//        Log.i("sum", String.valueOf(total));
 
         subtotalListener.onSubtotalUpdate(total);
     }

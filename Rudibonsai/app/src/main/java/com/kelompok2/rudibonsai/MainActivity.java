@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.WindowManager;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -15,7 +16,9 @@ import com.kelompok2.rudibonsai.session.SessionManager;
 import com.kelompok2.rudibonsai.ui.login.LoginActivity;
 
 public class MainActivity extends AppCompatActivity {
+
     SessionManager sessionManager;
+    ActionBar actionBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +41,9 @@ public class MainActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(navView, navController);
+
+        actionBar = getSupportActionBar();
+        actionBar.setElevation(0);
 
     }
 
