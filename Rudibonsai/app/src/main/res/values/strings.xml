@@ -21,8 +21,20 @@
     <string name="invalid_username">Not a valid username</string>
     <string name="invalid_password">Password must be >5 characters</string>
     <string name="login_failed">"Login failed"</string>
-    <string name="register">Register</string>
+    <string name="register">Daftar</string>
     <string name="delete">Hapus</string>
     <string name="quantity">Jumlah</string>
+<<<<<<< HEAD
     <string name="detail">detail</string>
+=======
+    <string name="login">Masuk</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="login_to_register">Belum punya akun?</string>
+    <string name="password_confirm">Konfirmasi Password</string>
+    <string name="gender">Jenis Kelamin</string>
+    <string name="address">Alamat</string>
+    <string name="logout">Keluar</string>
+    <string name="about">Tentang Aplikasi</string>
+>>>>>>> 7ee1991bdac8c930fef7a5595032b04497ce4132
 </resources>
