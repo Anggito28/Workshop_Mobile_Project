@@ -52,8 +52,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         linkRegister = findViewById(R.id.link_register);
 
         loading = new ProgressDialog(LoginActivity.this);
-        loading.setTitle("Memuat");
-        loading.setMessage("Mohon tunggu...");
+        loading.setTitle(R.string.loading);
+        loading.setMessage(this.getResources().getString(R.string.please_wait));
         loading.setCancelable(false);
 
         btnLogin.setOnClickListener(this);
@@ -106,8 +106,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     startActivity(intent);
                     finish();
 
-//                    Toast.makeText(LoginActivity.this, "oke", Toast.LENGTH_SHORT).show();
-
                 } else {
                     Log.i("tes", String.valueOf(response.raw()));
                     Log.i("tes", String.valueOf(response.body()));
@@ -115,7 +113,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
                     loading.dismiss();
 
-                    Toast.makeText(LoginActivity.this, "not oke", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LoginActivity.this, R.string.login_failed, Toast.LENGTH_SHORT).show();
                 }
             }
 
