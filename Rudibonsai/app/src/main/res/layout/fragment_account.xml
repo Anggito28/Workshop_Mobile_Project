@@ -1,16 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/account_layout_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="56dp"
     tools:context=".ui.account.AccountFragment">
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <RelativeLayout
             android:id="@+id/account_scroll_relative"
@@ -136,7 +139,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="Laki-laki"
-                            android:textAppearance="@style/TextAppearance.MdcTypographyStyles.Body1" />
+                            android:textAppearance="@style/TextAppearance.MdcTypographyStyles.Subtitle1" />
                     </LinearLayout>
 
                 </LinearLayout>
@@ -168,7 +171,8 @@
                             android:layout_height="wrap_content"
                             android:text="Alamat"
                             android:textAppearance="@style/TextAppearance.MdcTypographyStyles.Subtitle2"
-                            android:textColor="@color/material_on_surface_emphasis_high_type" />
+                            android:textColor="@color/green_700"
+                            android:textStyle="bold" />
 
                     </LinearLayout>
 
@@ -198,7 +202,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="Jawa Timur"
-                            android:textAppearance="@style/TextAppearance.MdcTypographyStyles.Body1" />
+                            android:textAppearance="@style/TextAppearance.MdcTypographyStyles.Subtitle1" />
                     </LinearLayout>
 
                 </LinearLayout>
@@ -227,7 +231,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="Kabupaten Blitar"
-                            android:textAppearance="@style/TextAppearance.MdcTypographyStyles.Body1" />
+                            android:textAppearance="@style/TextAppearance.MdcTypographyStyles.Subtitle1" />
                     </LinearLayout>
 
                 </LinearLayout>
@@ -256,7 +260,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="Talun"
-                            android:textAppearance="@style/TextAppearance.MdcTypographyStyles.Body1" />
+                            android:textAppearance="@style/TextAppearance.MdcTypographyStyles.Subtitle1" />
                     </LinearLayout>
 
                 </LinearLayout>
@@ -286,7 +290,7 @@
                             android:layout_height="wrap_content"
                             android:maxLines="2"
                             android:text="Desa Wonorejo, RT 2 / RW 3"
-                            android:textAppearance="@style/TextAppearance.MdcTypographyStyles.Body1" />
+                            android:textAppearance="@style/TextAppearance.MdcTypographyStyles.Subtitle1" />
                     </LinearLayout>
                 </LinearLayout>
 
@@ -331,7 +335,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="@string/logout"
-                            android:textAppearance="@style/TextAppearance.MdcTypographyStyles.Body1" />
+                            android:textAppearance="@style/TextAppearance.MdcTypographyStyles.Subtitle1" />
 
                         <TextView
                             android:id="@+id/tv_account_logout_secondary"
@@ -348,4 +352,4 @@
         </RelativeLayout>
     </ScrollView>
 
-</RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

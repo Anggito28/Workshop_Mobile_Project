@@ -1,6 +1,7 @@
 package com.kelompok2.rudibonsai.ui.cart;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -22,6 +23,7 @@ import com.kelompok2.rudibonsai.model.cart.CartItemQuantity;
 import com.kelompok2.rudibonsai.model.cart.CartResponse;
 import com.kelompok2.rudibonsai.model.cart.CartsItem;
 import com.kelompok2.rudibonsai.session.SessionManager;
+import com.kelompok2.rudibonsai.ui.checkout.CheckoutActivity;
 import com.kelompok2.rudibonsai.utils.MyFormatter;
 
 import java.util.ArrayList;
@@ -65,6 +67,9 @@ public class CartFragment extends Fragment implements CartAdapter.SubtotalListen
                         return;
                     }
                 }
+
+                Intent intent = new Intent(getActivity(), CheckoutActivity.class);
+                startActivity(intent);
 
                 Toast.makeText(getActivity(), "Success", Toast.LENGTH_SHORT).show();
             }

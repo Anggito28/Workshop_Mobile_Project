@@ -29,9 +29,9 @@ import java.util.List;
 public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViewHolder> {
 
     Context mContext;
-    List<CartsItem> mData;
-    static ArrayList<CartItemQuantity> quantities;
-    ArrayList<Integer> subtotalItem;
+    public static List<CartsItem> mData;
+    public static ArrayList<CartItemQuantity> quantities;
+    public static ArrayList<Integer> subtotalItem;
     private SubtotalListener subtotalListener;
 
     public CartAdapter(Context mContext, List<CartsItem> mData, ArrayList<CartItemQuantity> quantities, SubtotalListener subtotalListener) {
