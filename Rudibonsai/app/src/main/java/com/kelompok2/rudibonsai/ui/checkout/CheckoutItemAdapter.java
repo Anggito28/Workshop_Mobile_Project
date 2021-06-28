@@ -13,7 +13,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.kelompok2.rudibonsai.R;
 import com.kelompok2.rudibonsai.constant.ConstantValue;
-import com.kelompok2.rudibonsai.model.cart.CartItemQuantity;
 import com.kelompok2.rudibonsai.model.cart.CartsItem;
 import com.kelompok2.rudibonsai.model.cart.ProductImagesItem;
 import com.kelompok2.rudibonsai.utils.MyFormatter;
@@ -27,13 +26,13 @@ public class CheckoutItemAdapter extends RecyclerView.Adapter<CheckoutItemAdapte
 
     Context mContext;
     List<CartsItem> mData;
-    ArrayList<CartItemQuantity> quantities;
+    ArrayList<Integer> itemQty;
     ArrayList<Integer> subtotalItem;
 
-    public CheckoutItemAdapter(Context mContext, List<CartsItem> mData, ArrayList<CartItemQuantity> quantities, ArrayList<Integer> subtotalItem) {
+    public CheckoutItemAdapter(Context mContext, List<CartsItem> mData, ArrayList<Integer> itemQty, ArrayList<Integer> subtotalItem) {
         this.mContext = mContext;
         this.mData = mData;
-        this.quantities = quantities;
+        this.itemQty = itemQty;
         this.subtotalItem = subtotalItem;
     }
 
@@ -53,7 +52,7 @@ public class CheckoutItemAdapter extends RecyclerView.Adapter<CheckoutItemAdapte
         holder.tvTitle.setText(mData.get(position).getProduct().getName());
         holder.tvPrice.setText(MyFormatter.idrFormat(mData.get(position).getProduct().getPrice()));
 
-        String qty = String.valueOf(quantities.get(position).getQuantity());
+        String qty = String.valueOf(itemQty.get(position));
         String subtotal = MyFormatter.idrFormat(subtotalItem.get(position));
 
         holder.tvItemSubtotal.setText("x" + qty + " • " + subtotal);

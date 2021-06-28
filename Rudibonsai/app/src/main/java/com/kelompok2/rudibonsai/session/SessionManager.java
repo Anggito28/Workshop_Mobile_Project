@@ -22,6 +22,7 @@ public class SessionManager {
     private static final String PROFILE_PICTURE = "profile_picture";
     private static final String PROVINCE = "province";
     private static final String CITY = "city";
+    private static final String CITY_ID = "city_id";
     private static final String SUBDISTRICT = "subdistrict";
     private static final String ADDRESS_DETAIL = "address_detail";
     private static final String TOKEN = "token";
@@ -31,6 +32,8 @@ public class SessionManager {
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         editor = sharedPreferences.edit();
     }
+
+    public int getCityId(){return sharedPreferences.getInt(CITY_ID, 0);}
 
     public int getUserId() {
         return sharedPreferences.getInt(USER_ID, 0);
@@ -96,6 +99,7 @@ public class SessionManager {
         editor.putString(PROFILE_PICTURE, user.getProfilePicture());
         editor.putString(PROVINCE, user.getProvince());
         editor.putString(CITY, user.getCity());
+        editor.putInt(CITY_ID, user.getCityId());
         editor.putString(SUBDISTRICT, user.getSubdistrict());
         editor.putString(ADDRESS_DETAIL, user.getAddressDetail());
         editor.putString(TOKEN, user.getToken());
