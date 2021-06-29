@@ -32,6 +32,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViewHolder> 
     public static ArrayList<Integer> itemQty;
     public static ArrayList<Integer> itemSubtotal;
     public static ArrayList<Integer> itemWeight;
+    public static int qtyTotal;
     private SubtotalListener subtotalListener;
 
     public CartAdapter(Context mContext, List<CartsItem> mData, ArrayList<Integer> itemQty, SubtotalListener subtotalListener) {
@@ -134,6 +135,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViewHolder> 
             total += item;
         }
 
+        qtyTotal = total;
         subtotalListener.onQuantityUpdate(total);
     }
 

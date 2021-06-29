@@ -40,4 +40,5 @@
     <string name="please_wait">Mohon tunggu...</string>
     <string name="checkout">Checkout</string>
     <string name="choose_shipping_service">Pilih Jenis Layanan</string>
+    <string name="reload">Muat Ulang</string>
 </resources>
