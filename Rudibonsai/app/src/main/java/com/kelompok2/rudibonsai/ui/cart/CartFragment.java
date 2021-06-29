@@ -1,6 +1,7 @@
 package com.kelompok2.rudibonsai.ui.cart;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -18,10 +19,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.kelompok2.rudibonsai.R;
 import com.kelompok2.rudibonsai.api.ApiClient;
 import com.kelompok2.rudibonsai.api.CartInterface;
-import com.kelompok2.rudibonsai.model.cart.CartItemQuantity;
 import com.kelompok2.rudibonsai.model.cart.CartResponse;
 import com.kelompok2.rudibonsai.model.cart.CartsItem;
 import com.kelompok2.rudibonsai.session.SessionManager;
+import com.kelompok2.rudibonsai.ui.checkout.CheckoutActivity;
 import com.kelompok2.rudibonsai.utils.MyFormatter;
 
 import java.util.ArrayList;
@@ -38,7 +39,7 @@ public class CartFragment extends Fragment implements CartAdapter.SubtotalListen
     private SessionManager sessionManager;
     private ProgressDialog progressDialog;
     private List<CartsItem> cartsItems;
-    private ArrayList<CartItemQuantity> quantities;
+    private ArrayList<Integer> itemQty;
     private TextView subtotal;
     private Button btnCheckout;
 
@@ -59,14 +60,15 @@ public class CartFragment extends Fragment implements CartAdapter.SubtotalListen
         btnCheckout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                for (int i = 0; i < CartAdapter.quantities.size(); i++){
-                    if (CartAdapter.quantities.get(i).getQuantity() > cartsItems.get(i).getProduct().getStock()){
-                        Toast.makeText(getActivity(), "gagal", Toast.LENGTH_SHORT).show();
+                for (int i = 0; i < CartAdapter.itemQty.size(); i++){
+                    if (CartAdapter.itemQty.get(i) > cartsItems.get(i).getProduct().getStock() || CartAdapter.itemQty.get(i) < 1){
+                        Toast.makeText(getActivity(), "Input tidak valid", Toast.LENGTH_SHORT).show();
                         return;
                     }
                 }
 
-                Toast.makeText(getActivity(), "Success", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(getActivity(), CheckoutActivity.class);
+                startActivity(intent);
             }
         });
 
@@ -76,7 +78,6 @@ public class CartFragment extends Fragment implements CartAdapter.SubtotalListen
     private void fetchCartItems() {
         String token = "Bearer " + sessionManager.getTOKEN();
         progressDialog.show();
-//        Log.i("token", token);
 
         cartInterface = ApiClient.getClient().create(CartInterface.class);
         Call<CartResponse> cartCall = cartInterface.getCarts(token);
@@ -91,9 +92,9 @@ public class CartFragment extends Fragment implements CartAdapter.SubtotalListen
                 }
 
                 cartsItems = response.body().getCarts();
-                quantities = populateQty();
+                itemQty = populateQty();
 
-                putDataToRecyclerView(cartsItems, quantities);
+                putDataToRecyclerView(cartsItems, itemQty);
 
                 Log.i("success", "oke");
 
@@ -112,19 +113,17 @@ public class CartFragment extends Fragment implements CartAdapter.SubtotalListen
 
     }
 
-    private ArrayList<CartItemQuantity> populateQty() {
-        ArrayList<CartItemQuantity> list = new ArrayList<>();
+    private ArrayList<Integer> populateQty() {
+        ArrayList<Integer> list = new ArrayList<>();
 
         for (int i = 0; i < cartsItems.size(); i++){
-            CartItemQuantity cartItemQuantity = new CartItemQuantity();
-            cartItemQuantity.setQuantity(1);
-            list.add(cartItemQuantity);
+            list.add(1);
         }
 
         return list;
     }
 
-    private void putDataToRecyclerView(List<CartsItem> cartsItems, ArrayList<CartItemQuantity> quantities) {
+    private void putDataToRecyclerView(List<CartsItem> cartsItems, ArrayList<Integer> quantities) {
         CartAdapter cartAdapter = new CartAdapter(getActivity(), cartsItems, quantities, this);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setAdapter(cartAdapter);

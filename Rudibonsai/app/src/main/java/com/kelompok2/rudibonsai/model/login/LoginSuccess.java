@@ -2,7 +2,7 @@ package com.kelompok2.rudibonsai.model.login;
 
 import com.google.gson.annotations.SerializedName;
 
-public class LoginSuccess {
+public class LoginSuccess{
 
 	@SerializedName("data")
 	private LoginData loginData;
@@ -13,24 +13,12 @@ public class LoginSuccess {
 	@SerializedName("status")
 	private String status;
 
-	public void setData(LoginData loginData){
-		this.loginData = loginData;
-	}
-
 	public LoginData getData(){
 		return loginData;
 	}
 
-	public void setMessage(String message){
-		this.message = message;
-	}
-
 	public String getMessage(){
 		return message;
-	}
-
-	public void setStatus(String status){
-		this.status = status;
 	}
 
 	public String getStatus(){

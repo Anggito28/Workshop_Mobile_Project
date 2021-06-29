@@ -28,7 +28,7 @@ public class HomeFragment extends Fragment {
         View root = inflater.inflate(R.layout.fragment_home, container, false);
         setHasOptionsMenu(true);
 
-        textView = root.findViewById(R.id.text_home);
+        textView = root.findViewById(R.id.textHome);
 
 //        homeViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
 //            @Override

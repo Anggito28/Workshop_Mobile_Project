@@ -5,8 +5,7 @@
     android:id="@+id/item_cart"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="8dp"
-    android:layout_marginBottom="8dp">
+    android:paddingTop="16dp">
 
     <ImageView
         android:id="@+id/iv_cart_product"
@@ -20,8 +19,7 @@
         android:layout_width="fill_parent"
         android:layout_height="90dp"
         android:layout_toRightOf="@id/iv_cart_product"
-        android:paddingLeft="8dp"
-        android:paddingTop="8dp">
+        android:paddingLeft="8dp">
 
         <TextView
             android:id="@+id/tv_cart_product_title"

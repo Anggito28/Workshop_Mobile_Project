@@ -2,21 +2,354 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/account_layout_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.account.AccountFragment">
 
-    <TextView
-        android:id="@+id/text_account"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:textAlignment="center"
-        android:textSize="20sp"
+        android:layout_height="match_parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
+
+        <RelativeLayout
+            android:id="@+id/account_scroll_relative"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <View
+                android:id="@+id/account_view_header1"
+                android:layout_width="match_parent"
+                android:layout_height="64dp"
+                android:layout_alignParentTop="true"
+                android:background="@color/green_500" />
+
+            <RelativeLayout
+                android:id="@+id/account_layout_header"
+                android:layout_width="match_parent"
+                android:layout_height="128dp"
+                android:layout_alignParentTop="true"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp">
+
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/iv_account_picture"
+                    android:layout_width="96dp"
+                    android:layout_height="96dp"
+                    android:layout_centerVertical="true"
+                    android:background="#FFFFFF"
+                    android:scaleType="centerCrop"
+                    app:shapeAppearance="@style/ShapeAppearance.App.CircleImageView"
+                    app:srcCompat="@drawable/ic_baseline_account_circle_128" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="96dp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="16dp"
+                    android:layout_toRightOf="@id/iv_account_picture"
+                    android:orientation="vertical">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1">
+
+                        <TextView
+                            android:id="@+id/tv_account_fullname"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentBottom="true"
+                            android:layout_marginBottom="8dp"
+                            android:ellipsize="end"
+                            android:maxLines="1"
+                            android:text="Nama Lengkap User"
+                            android:textAppearance="@style/TextAppearance.MdcTypographyStyles.Headline6"
+                            android:textColor="@color/material_on_primary_emphasis_high_type"
+                            android:textStyle="bold" />
+                    </RelativeLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/tv_account_email"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:text="user@gmail.com"
+                            android:textAppearance="@style/TextAppearance.MdcTypographyStyles.Caption"
+                            android:textColor="@color/material_on_surface_emphasis_medium" />
+
+                        <TextView
+                            android:id="@+id/tv_account_phone"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="2sp"
+                            android:minLines="1"
+                            android:text="0821-1234-1234"
+                            android:textAppearance="@style/TextAppearance.MdcTypographyStyles.Caption"
+                            android:textColor="@color/material_on_surface_emphasis_medium" />
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </RelativeLayout>
+
+            <View
+                android:id="@+id/account_divider"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@id/account_layout_header"
+                android:background="?android:attr/listDivider" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@id/account_divider"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:padding="16dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="56dp"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/tv_account_gender"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/gender"
+                            android:textAppearance="@style/TextAppearance.MdcTypographyStyles.Overline" />
+
+                        <TextView
+                            android:id="@+id/tv_account_gender_user"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Laki-laki"
+                            android:textAppearance="@style/TextAppearance.MdcTypographyStyles.Subtitle1" />
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingLeft="16dp"
+                    android:paddingTop="16dp"
+                    android:paddingRight="16dp"
+                    android:paddingBottom="16dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="56dp"
+                        android:orientation="vertical">
+
+                        <View
+                            android:id="@+id/divider2"
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="?android:attr/listDivider" />
+
+                        <TextView
+                            android:id="@+id/tv_account_address"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Alamat"
+                            android:textAppearance="@style/TextAppearance.MdcTypographyStyles.Subtitle2"
+                            android:textColor="@color/green_700"
+                            android:textStyle="bold" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:padding="16dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="56dp"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/tv_account_province"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="provinsi"
+                            android:textAppearance="@style/TextAppearance.MdcTypographyStyles.Overline" />
+
+                        <TextView
+                            android:id="@+id/tv_account_province_user"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Jawa Timur"
+                            android:textAppearance="@style/TextAppearance.MdcTypographyStyles.Subtitle1" />
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:padding="16dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="56dp"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/tv_account_city"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="kota / kabupaten"
+                            android:textAppearance="@style/TextAppearance.MdcTypographyStyles.Overline" />
+
+                        <TextView
+                            android:id="@+id/tv_account_city_user"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Kabupaten Blitar"
+                            android:textAppearance="@style/TextAppearance.MdcTypographyStyles.Subtitle1" />
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:padding="16dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="56dp"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/tv_account_subdistrict"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="kecamatan"
+                            android:textAppearance="@style/TextAppearance.MdcTypographyStyles.Overline" />
+
+                        <TextView
+                            android:id="@+id/tv_account_subdistrict_user"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Talun"
+                            android:textAppearance="@style/TextAppearance.MdcTypographyStyles.Subtitle1" />
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:padding="16dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="56dp"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/tv_account_detail_address"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="detail alamat"
+                            android:textAppearance="@style/TextAppearance.MdcTypographyStyles.Overline" />
+
+                        <TextView
+                            android:id="@+id/tv_account_detail_address_user"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:maxLines="2"
+                            android:text="Desa Wonorejo, RT 2 / RW 3"
+                            android:textAppearance="@style/TextAppearance.MdcTypographyStyles.Subtitle1" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+
+                    <View
+                        android:id="@+id/divider3"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_weight="1"
+                        android:background="?android:attr/listDivider" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/menu_account_logout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="?android:attr/selectableItemBackground"
+                    android:clickable="true"
+                    android:orientation="horizontal"
+                    android:padding="16dp">
+
+                    <ImageView
+                        android:id="@+id/account_icon_6"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:visibility="visible"
+                        app:srcCompat="@drawable/ic_baseline_logout_24" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="32dp"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/tv_account_logout"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/logout"
+                            android:textAppearance="@style/TextAppearance.MdcTypographyStyles.Subtitle1" />
+
+                        <TextView
+                            android:id="@+id/tv_account_logout_secondary"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:maxLines="2"
+                            android:text="Desa Wonorejo, RT 2 / RW 3"
+                            android:textAppearance="@style/TextAppearance.MdcTypographyStyles.Headline6"
+                            android:visibility="gone" />
+                    </LinearLayout>
+
+                </LinearLayout>
+            </LinearLayout>
+        </RelativeLayout>
+    </ScrollView>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
