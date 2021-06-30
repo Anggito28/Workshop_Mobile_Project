@@ -7,6 +7,16 @@
     android:orientation="vertical"
     tools:context=".ui.cart.CartFragment">
 
+    <Button
+        android:id="@+id/btn_cart_reload"
+        style="@style/Widget.AppCompat.Button.Borderless"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:text="@string/reload"
+        android:textColor="@color/green_500"
+        android:visibility="gone" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/list_cart"
         android:layout_width="match_parent"

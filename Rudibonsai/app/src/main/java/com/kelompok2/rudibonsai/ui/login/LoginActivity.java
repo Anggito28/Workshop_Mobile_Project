@@ -20,9 +20,12 @@ import com.kelompok2.rudibonsai.R;
 import com.kelompok2.rudibonsai.api.ApiClient;
 import com.kelompok2.rudibonsai.api.LoginInterface;
 import com.kelompok2.rudibonsai.model.login.LoginData;
+import com.kelompok2.rudibonsai.model.login.LoginError;
 import com.kelompok2.rudibonsai.model.login.LoginSuccess;
 import com.kelompok2.rudibonsai.session.SessionManager;
 import com.kelompok2.rudibonsai.ui.register.RegisterActivity;
+
+import java.io.IOException;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -107,13 +110,22 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     finish();
 
                 } else {
-                    Log.i("tes", String.valueOf(response.raw()));
-                    Log.i("tes", String.valueOf(response.body()));
-                    Log.i("tes", String.valueOf(response.errorBody()));
+                    
+                    try {
+                        String jsonString = response.errorBody().string();
+
+                        Gson g = new Gson();
+                        LoginError loginError = g.fromJson(jsonString, LoginError.class);
+
+                        Toast.makeText(LoginActivity.this, loginError.getMessage(), Toast.LENGTH_SHORT).show();
+
+                        Log.i("errorBody", jsonString);
+                        Log.i("errorResponse", loginError.getMessage());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
 
                     loading.dismiss();
-
-                    Toast.makeText(LoginActivity.this, R.string.login_failed, Toast.LENGTH_SHORT).show();
                 }
             }
 

@@ -1,7 +1,10 @@
 package com.kelompok2.rudibonsai.ui.checkout;
 
+import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -19,9 +22,13 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.gson.JsonElement;
 import com.kelompok2.rudibonsai.R;
 import com.kelompok2.rudibonsai.api.ApiClient;
+import com.kelompok2.rudibonsai.api.OrderInterface;
 import com.kelompok2.rudibonsai.api.RajaongkirInterface;
+import com.kelompok2.rudibonsai.model.order.OrderDetailItem;
+import com.kelompok2.rudibonsai.model.order.OrderPost;
 import com.kelompok2.rudibonsai.model.rajaongkir.CostsItem;
 import com.kelompok2.rudibonsai.model.rajaongkir.RajaongkirResponse;
 import com.kelompok2.rudibonsai.session.SessionManager;
@@ -46,6 +53,10 @@ public class CheckoutActivity extends AppCompatActivity {
     RajaongkirInterface rajaongkirInterface;
     TextInputLayout tilService;
     List<CostsItem> shippingCost;
+    int grandTotalAmount, productTotalAmount, selectedShippingCost;
+    String selectedShippingAgent, selectedShippingService;
+    ProgressDialog loading;
+    Intent intentCheckoutResponse;
 
     @RequiresApi(api = Build.VERSION_CODES.R)
     @Override
@@ -71,6 +82,12 @@ public class CheckoutActivity extends AppCompatActivity {
         acService = findViewById(R.id.ac_checkout_service);
         tilService = findViewById(R.id.til_checkout_service);
 
+        loading = new ProgressDialog(CheckoutActivity.this);
+        loading.setCancelable(false);
+        loading.setMessage("Memproses Pesanan...");
+
+        intentCheckoutResponse = new Intent(CheckoutActivity.this, CheckoutResponseActivity.class);
+
         tvFullname.setText(sessionManager.getFULLNAME());
         String phoneEmail = sessionManager.getPHONE() + " • " + sessionManager.getEMAIL();
         tvPhoneEmail.setText(phoneEmail);
@@ -93,12 +110,12 @@ public class CheckoutActivity extends AppCompatActivity {
                 tvTotal.setText("Rp 0");
                 tvShipping.setText("Rp 0");
 
-                String courier = couriers[position];
+                selectedShippingAgent = couriers[position];
                 int destination = sessionManager.getCityId();
                 int totalWeight = countTotalWeight();
 
                 rajaongkirInterface = ApiClient.getClient().create(RajaongkirInterface.class);
-                Call<RajaongkirResponse> rajaongkirResponseCall = rajaongkirInterface.getShippingCost(courier, destination, totalWeight);
+                Call<RajaongkirResponse> rajaongkirResponseCall = rajaongkirInterface.getShippingCost(selectedShippingAgent, destination, totalWeight);
                 rajaongkirResponseCall.enqueue(new Callback<RajaongkirResponse>() {
                     @Override
                     public void onResponse(Call<RajaongkirResponse> call, Response<RajaongkirResponse> response) {
@@ -133,12 +150,13 @@ public class CheckoutActivity extends AppCompatActivity {
         acService.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                int selectedCost = shippingCost.get(position).getCost().get(0).getValue();
+                selectedShippingCost = shippingCost.get(position).getCost().get(0).getValue();
+                selectedShippingService = shippingCost.get(position).getService();
 
-                String ongkirText = MyFormatter.idrFormat(selectedCost);
+                String ongkirText = MyFormatter.idrFormat(selectedShippingCost);
                 tvShipping.setText(ongkirText);
 
-                String total = getTotalAmount(position, selectedCost);
+                String total = countTotalAmount(position, selectedShippingCost);
                 tvTotal.setText(total);
 
                 btnOrder.setEnabled(true);
@@ -148,9 +166,71 @@ public class CheckoutActivity extends AppCompatActivity {
         btnOrder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                loading.show();
+
+                OrderPost orderBody = makeOrderBody();
+                String token = "Bearer " + sessionManager.getTOKEN();
+
+                OrderInterface orderInterface = ApiClient.getClient().create(OrderInterface.class);
+                Call<JsonElement> orderCall = orderInterface.makeOrder(token, orderBody);
+                orderCall.enqueue(new Callback<JsonElement>() {
+                    @Override
+                    public void onResponse(Call<JsonElement> call, Response<JsonElement> response) {
+                        loading.dismiss();
+
+                        if (!response.isSuccessful()){
+                            Log.i("fail", String.valueOf(response.raw()));
+                            intentCheckoutResponse.putExtra("checkout_status", "fail");
+                            intentCheckoutResponse.putExtra("checkout_message", "Terjadi kesalahan");
+                            startActivity(intentCheckoutResponse);
+                            finish();
+
+                            return;
+                        }
+                        Log.i("success", String.valueOf(response.body()));
+
+                        intentCheckoutResponse.putExtra("checkout_status", "success");
+                        intentCheckoutResponse.putExtra("checkout_message", "Pesanan berhasil dibuat");
+                        startActivity(intentCheckoutResponse);
+                        finish();
+                    }
+
+                    @Override
+                    public void onFailure(Call<JsonElement> call, Throwable t) {
+                        loading.dismiss();
+                        intentCheckoutResponse.putExtra("checkout_status", "fail");
+                        intentCheckoutResponse.putExtra("checkout_message", t.getLocalizedMessage());
+                        startActivity(intentCheckoutResponse);
+                        finish();
+
+                        t.printStackTrace();
+                    }
+                });
 
             }
         });
+    }
+
+    private OrderPost makeOrderBody() {
+        OrderPost orderBody = new OrderPost();
+        List<OrderDetailItem> detailItems = new ArrayList<>();
+
+        for (int i = 0; i < CartAdapter.mData.size(); i++){
+            OrderDetailItem item = new OrderDetailItem();
+            item.setProductId(CartAdapter.mData.get(i).getProductId());
+            item.setQuantity(CartAdapter.itemQty.get(i));
+            detailItems.add(item);
+        }
+
+        orderBody.setGrandTotalAmount(grandTotalAmount);
+        orderBody.setProductTotalAmount(productTotalAmount);
+        orderBody.setShippingCost(selectedShippingCost);
+        orderBody.setShippingAgent(selectedShippingAgent);
+        orderBody.setShippingService(selectedShippingService);
+        orderBody.setQuantityTotal(CartAdapter.qtyTotal);
+        orderBody.setOrderDetail(detailItems);
+
+        return orderBody;
     }
 
     private void setCheckoutItemList() {
@@ -159,15 +239,25 @@ public class CheckoutActivity extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
     }
 
-    private String getTotalAmount(int position, int selectedCost) {
+    private String countTotalAmount(int position, int selectedCost) {
         int subtotal = 0;
         for (int item : CartAdapter.itemSubtotal){
             subtotal += item;
         }
 
         int total = selectedCost + subtotal;
+        setGrandTotalAmount(total);
+        setProductTotalAmount(subtotal);
 
         return MyFormatter.idrFormat(total);
+    }
+
+    private void setProductTotalAmount(int subtotal) {
+        productTotalAmount = subtotal;
+    }
+
+    private void setGrandTotalAmount(int total) {
+        grandTotalAmount = total;
     }
 
     private void setServiceList(List<CostsItem> costs) {

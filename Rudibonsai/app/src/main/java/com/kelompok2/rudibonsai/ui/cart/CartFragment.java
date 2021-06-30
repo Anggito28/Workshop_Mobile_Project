@@ -12,6 +12,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -41,7 +42,8 @@ public class CartFragment extends Fragment implements CartAdapter.SubtotalListen
     private List<CartsItem> cartsItems;
     private ArrayList<Integer> itemQty;
     private TextView subtotal;
-    private Button btnCheckout;
+    private Button btnCheckout, btnReload;
+    private CardView cvCheckout;
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_cart, container, false);
@@ -50,7 +52,10 @@ public class CartFragment extends Fragment implements CartAdapter.SubtotalListen
         recyclerView = root.findViewById(R.id.list_cart);
         subtotal = root.findViewById(R.id.tv_cart_subtotal);
         btnCheckout = root.findViewById(R.id.btn_cart_checkout);
+        cvCheckout = root.findViewById(R.id.cardview_cart_checkout);
+        btnReload = root.findViewById(R.id.btn_cart_reload);
 
+        cvCheckout.setVisibility(View.INVISIBLE);
         progressDialog = new ProgressDialog(getActivity());
         progressDialog.setCancelable(false);
         progressDialog.setMessage("Fetching Carts...");
@@ -72,6 +77,13 @@ public class CartFragment extends Fragment implements CartAdapter.SubtotalListen
             }
         });
 
+        btnReload.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                fetchCartItems();
+            }
+        });
+
         return root;
     }
 
@@ -86,10 +98,14 @@ public class CartFragment extends Fragment implements CartAdapter.SubtotalListen
             public void onResponse(Call<CartResponse> call, Response<CartResponse> response) {
                 if (!response.isSuccessful()){
                     Log.i("fail", String.valueOf(response));
-                    Toast.makeText(getActivity(), response.message(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), "Terjadi kesalahan", Toast.LENGTH_SHORT).show();
                     progressDialog.dismiss();
+                    btnReload.setVisibility(View.VISIBLE);
                     return;
                 }
+                progressDialog.dismiss();
+                cvCheckout.setVisibility(View.VISIBLE);
+                btnReload.setVisibility(View.GONE);
 
                 cartsItems = response.body().getCarts();
                 itemQty = populateQty();
@@ -99,7 +115,6 @@ public class CartFragment extends Fragment implements CartAdapter.SubtotalListen
                 Log.i("success", "oke");
 
                 Toast.makeText(getActivity(), "Fetch success", Toast.LENGTH_SHORT).show();
-                progressDialog.dismiss();
             }
 
             @Override
@@ -108,6 +123,7 @@ public class CartFragment extends Fragment implements CartAdapter.SubtotalListen
                 Log.i("failure", "gagal");
                 Toast.makeText(getActivity(), t.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
                 progressDialog.dismiss();
+                btnReload.setVisibility(View.VISIBLE);
             }
         });
 
