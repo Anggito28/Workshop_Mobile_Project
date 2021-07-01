@@ -1,5 +1,6 @@
 package com.kelompok2.rudibonsai.ui.cart;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -7,23 +8,33 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.kelompok2.rudibonsai.R;
+import com.kelompok2.rudibonsai.api.ApiClient;
+import com.kelompok2.rudibonsai.api.CartInterface;
 import com.kelompok2.rudibonsai.constant.ConstantValue;
+import com.kelompok2.rudibonsai.model.cart.CartDeleteResponse;
 import com.kelompok2.rudibonsai.model.cart.CartsItem;
 import com.kelompok2.rudibonsai.model.cart.ProductImagesItem;
+import com.kelompok2.rudibonsai.session.SessionManager;
 import com.kelompok2.rudibonsai.utils.MyFormatter;
 
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViewHolder> {
 
@@ -33,13 +44,14 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViewHolder> 
     public static ArrayList<Integer> itemSubtotal;
     public static ArrayList<Integer> itemWeight;
     public static int qtyTotal;
-    private SubtotalListener subtotalListener;
+    private ListItemListener listItemListener;
+    SessionManager sessionManager;
 
-    public CartAdapter(Context mContext, List<CartsItem> mData, ArrayList<Integer> itemQty, SubtotalListener subtotalListener) {
+    public CartAdapter(Context mContext, List<CartsItem> mData, ArrayList<Integer> itemQty, ListItemListener listItemListener) {
         this.mContext = mContext;
         this.mData = mData;
         this.itemQty = itemQty;
-        this.subtotalListener = subtotalListener;
+        this.listItemListener = listItemListener;
         this.itemSubtotal = new ArrayList<>();
         this.itemWeight = new ArrayList<>();
     }
@@ -100,6 +112,40 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViewHolder> 
 
             }
         });
+
+        holder.btnDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                holder.loading.show();
+                sessionManager = new SessionManager(mContext);
+                String token = "Bearer " + sessionManager.getTOKEN();
+
+                CartInterface deleteCart = ApiClient.getClient().create(CartInterface.class);
+                Call<CartDeleteResponse> cartDeleteCall = deleteCart.deleteCart(token, mData.get(position).getId());
+                cartDeleteCall.enqueue(new Callback<CartDeleteResponse>() {
+                    @Override
+                    public void onResponse(Call<CartDeleteResponse> call, Response<CartDeleteResponse> response) {
+                        if (!response.isSuccessful()){
+                            holder.loading.dismiss();
+                            Toast.makeText(mContext, "Terjadi kesalahan", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+                        holder.loading.dismiss();
+
+                        listItemListener.onCartDelete();
+
+                        Toast.makeText(mContext, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onFailure(Call<CartDeleteResponse> call, Throwable t) {
+                        holder.loading.dismiss();
+                        t.printStackTrace();
+                        Toast.makeText(mContext, t.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+        });
     }
 
     private void updateItemWeight(int position, int qtyInt) {
@@ -136,7 +182,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViewHolder> 
         }
 
         qtyTotal = total;
-        subtotalListener.onQuantityUpdate(total);
+        listItemListener.onQuantityUpdate(total);
     }
 
     private void countSubtotalAmount() {
@@ -145,7 +191,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViewHolder> 
             total += item;
         }
 
-        subtotalListener.onSubtotalUpdate(total);
+        listItemListener.onSubtotalUpdate(total);
     }
 
     private void updateItemQty(int qtyInt, int position) {
@@ -157,9 +203,10 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViewHolder> 
         return mData.size();
     }
 
-    public interface SubtotalListener{
+    public interface ListItemListener {
         void onSubtotalUpdate(int total);
         void onQuantityUpdate(int total);
+        void onCartDelete();
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
@@ -167,6 +214,8 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViewHolder> 
         ImageView ivProduct;
         TextView tvTitle,tvPrice,tvStock;
         EditText etQuantity;
+        ImageButton btnDelete;
+        ProgressDialog loading;
 
         public MyViewHolder(@NonNull @NotNull View itemView) {
             super(itemView);
@@ -176,7 +225,11 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViewHolder> 
             tvPrice = itemView.findViewById(R.id.tv_cart_product_price);
             tvStock = itemView.findViewById(R.id.tv_cart_product_stock);
             etQuantity = itemView.findViewById(R.id.et_quantity);
+            btnDelete = itemView.findViewById(R.id.btn_cart_delete);
+            loading = new ProgressDialog(mContext);
 
+            loading.setCancelable(false);
+            loading.setMessage("Memuat...");
         }
     }
 }

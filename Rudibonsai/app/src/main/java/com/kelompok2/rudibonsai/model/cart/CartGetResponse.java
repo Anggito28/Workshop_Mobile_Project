@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
-public class CartResponse{
+public class CartGetResponse {
 
 	@SerializedName("carts")
 	private List<CartsItem> carts;
