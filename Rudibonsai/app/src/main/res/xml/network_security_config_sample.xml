@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<network-security-config>
+    <domain-config cleartextTrafficPermitted="true">
+    <!--
+        - Duplikat / copas file ini
+        - Ganti name file duplikatnya menjadi "network_security_config.xml"
+        - Ubah bagian "SERVER_ADDRESS" di "network_security_config.xml" menjadi alamat ip laptop / laravel
+
+        - File "network_security_config_sample.xml" JANGAN DIHAPUS DAN JANGAN DIUBAH!!!
+    -->
+
+        <domain includeSubdomains="true">SERVER_ADDRESS</domain>
+    </domain-config>
+</network-security-config>
