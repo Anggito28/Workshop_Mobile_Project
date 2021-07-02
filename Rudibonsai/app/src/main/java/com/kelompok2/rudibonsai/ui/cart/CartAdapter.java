@@ -21,9 +21,9 @@ import com.kelompok2.rudibonsai.R;
 import com.kelompok2.rudibonsai.api.ApiClient;
 import com.kelompok2.rudibonsai.api.CartInterface;
 import com.kelompok2.rudibonsai.constant.ConstantValue;
-import com.kelompok2.rudibonsai.model.cart.CartDeleteResponse;
-import com.kelompok2.rudibonsai.model.cart.CartsItem;
-import com.kelompok2.rudibonsai.model.cart.ProductImagesItem;
+import com.kelompok2.rudibonsai.model.cart.get.CartDeleteResponse;
+import com.kelompok2.rudibonsai.model.cart.get.CartsItem;
+import com.kelompok2.rudibonsai.model.cart.get.ProductImagesItem;
 import com.kelompok2.rudibonsai.session.SessionManager;
 import com.kelompok2.rudibonsai.utils.MyFormatter;
 

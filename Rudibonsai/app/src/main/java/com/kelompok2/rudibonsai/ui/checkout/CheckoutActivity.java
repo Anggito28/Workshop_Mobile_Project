@@ -27,8 +27,8 @@ import com.kelompok2.rudibonsai.R;
 import com.kelompok2.rudibonsai.api.ApiClient;
 import com.kelompok2.rudibonsai.api.OrderInterface;
 import com.kelompok2.rudibonsai.api.RajaongkirInterface;
-import com.kelompok2.rudibonsai.model.order.OrderDetailItem;
-import com.kelompok2.rudibonsai.model.order.OrderPost;
+import com.kelompok2.rudibonsai.model.order.post.OrderPostDetailItem;
+import com.kelompok2.rudibonsai.model.order.post.OrderPost;
 import com.kelompok2.rudibonsai.model.rajaongkir.CostsItem;
 import com.kelompok2.rudibonsai.model.rajaongkir.RajaongkirResponse;
 import com.kelompok2.rudibonsai.session.SessionManager;
@@ -213,10 +213,10 @@ public class CheckoutActivity extends AppCompatActivity {
 
     private OrderPost makeOrderBody() {
         OrderPost orderBody = new OrderPost();
-        List<OrderDetailItem> detailItems = new ArrayList<>();
+        List<OrderPostDetailItem> detailItems = new ArrayList<>();
 
         for (int i = 0; i < CartAdapter.mData.size(); i++){
-            OrderDetailItem item = new OrderDetailItem();
+            OrderPostDetailItem item = new OrderPostDetailItem();
             item.setProductId(CartAdapter.mData.get(i).getProductId());
             item.setQuantity(CartAdapter.itemQty.get(i));
             detailItems.add(item);

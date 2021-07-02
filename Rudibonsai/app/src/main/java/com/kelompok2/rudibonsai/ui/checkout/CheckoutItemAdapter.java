@@ -13,8 +13,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.kelompok2.rudibonsai.R;
 import com.kelompok2.rudibonsai.constant.ConstantValue;
-import com.kelompok2.rudibonsai.model.cart.CartsItem;
-import com.kelompok2.rudibonsai.model.cart.ProductImagesItem;
+import com.kelompok2.rudibonsai.model.cart.get.CartsItem;
+import com.kelompok2.rudibonsai.model.cart.get.ProductImagesItem;
 import com.kelompok2.rudibonsai.utils.MyFormatter;
 
 import org.jetbrains.annotations.NotNull;

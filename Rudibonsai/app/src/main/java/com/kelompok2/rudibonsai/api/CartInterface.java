@@ -1,7 +1,7 @@
 package com.kelompok2.rudibonsai.api;
 
-import com.kelompok2.rudibonsai.model.cart.CartDeleteResponse;
-import com.kelompok2.rudibonsai.model.cart.CartGetResponse;
+import com.kelompok2.rudibonsai.model.cart.get.CartDeleteResponse;
+import com.kelompok2.rudibonsai.model.cart.get.CartGetResponse;
 
 import retrofit2.Call;
 import retrofit2.http.DELETE;
