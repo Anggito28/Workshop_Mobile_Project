@@ -1,4 +1,4 @@
-package com.kelompok2.rudibonsai.ui.checkout;
+package com.kelompok2.rudibonsai.ui.order;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -13,33 +13,28 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.kelompok2.rudibonsai.R;
 import com.kelompok2.rudibonsai.constant.ConstantValue;
-import com.kelompok2.rudibonsai.model.cart.get.CartsItem;
-import com.kelompok2.rudibonsai.model.cart.get.ProductImagesItem;
+import com.kelompok2.rudibonsai.model.order.get.detail.OrderDetailItem;
+import com.kelompok2.rudibonsai.model.order.get.detail.ProductImagesItem;
 import com.kelompok2.rudibonsai.utils.MyFormatter;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
 import java.util.List;
 
-public class CheckoutItemAdapter extends RecyclerView.Adapter<CheckoutItemAdapter.MyViewHolder> {
+public class OrderDetailAdapter extends RecyclerView.Adapter<OrderDetailAdapter.MyViewHolder> {
 
+    List<OrderDetailItem> mData;
     Context mContext;
-    List<CartsItem> mData;
-    ArrayList<Integer> itemQty;
-    ArrayList<Integer> subtotalItem;
 
-    public CheckoutItemAdapter(Context mContext, List<CartsItem> mData, ArrayList<Integer> itemQty, ArrayList<Integer> subtotalItem) {
-        this.mContext = mContext;
+    public OrderDetailAdapter(List<OrderDetailItem> mData, Context mContext) {
         this.mData = mData;
-        this.itemQty = itemQty;
-        this.subtotalItem = subtotalItem;
+        this.mContext = mContext;
     }
 
     @NonNull
     @NotNull
     @Override
-    public CheckoutItemAdapter.MyViewHolder onCreateViewHolder(@NonNull @NotNull ViewGroup parent, int viewType) {
+    public OrderDetailAdapter.MyViewHolder onCreateViewHolder(@NonNull @NotNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(mContext);
         View view = inflater.inflate(R.layout.list_item_small, parent,false);
 
@@ -47,13 +42,15 @@ public class CheckoutItemAdapter extends RecyclerView.Adapter<CheckoutItemAdapte
     }
 
     @Override
-    public void onBindViewHolder(@NonNull @NotNull CheckoutItemAdapter.MyViewHolder holder, int position) {
-
+    public void onBindViewHolder(@NonNull @NotNull OrderDetailAdapter.MyViewHolder holder, int position) {
         holder.tvTitle.setText(mData.get(position).getProduct().getName());
         holder.tvPrice.setText(MyFormatter.idrFormat(mData.get(position).getProduct().getPrice()));
 
-        String qty = String.valueOf(itemQty.get(position));
-        String subtotal = MyFormatter.idrFormat(subtotalItem.get(position));
+        String qty = String.valueOf(mData.get(position).getQuantity());
+        
+        int subtotalInt = mData.get(position).getQuantity() * mData.get(position).getProduct().getPrice();
+        
+        String subtotal = MyFormatter.idrFormat(subtotalInt);
 
         holder.tvItemSubtotal.setText("x" + qty + " • " + subtotal);
 

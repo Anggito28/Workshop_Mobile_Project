@@ -1,9 +1,11 @@
 package com.kelompok2.rudibonsai.ui.order;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -67,6 +69,15 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.MyViewHolder
 
         holder.tvDate.setText(date);
         holder.tvTime.setText(time);
+
+        holder.mainLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(mContext, OrderDetailActivity.class);
+                intent.putExtra("order_id", mData.get(position).getOrder().getId());
+                mContext.startActivity(intent);
+            }
+        });
     }
 
     private String getFormatedTime(String dateTimeString) {
@@ -115,6 +126,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.MyViewHolder
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
         TextView tvTitle, tvTotal, tvStatus, tvDate, tvTime, tvQty;
+        LinearLayout mainLayout;
 
         public MyViewHolder(@NonNull @NotNull View itemView) {
             super(itemView);
@@ -125,6 +137,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.MyViewHolder
             tvDate = itemView.findViewById(R.id.tv_order_item_date);
             tvTime = itemView.findViewById(R.id.tv_order_item_time);
             tvQty = itemView.findViewById(R.id.tv_order_item_qty);
+            mainLayout = itemView.findViewById(R.id.main_layout_list_item_order);
         }
     }
 }

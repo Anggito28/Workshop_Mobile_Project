@@ -12,13 +12,10 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:elevation="8dp"
-        app:tabBackground="@color/green_500"
-        app:tabIndicatorColor="@color/white"
         app:tabMode="scrollable"
         app:tabPaddingEnd="16dp"
         app:tabPaddingStart="16dp"
-        app:tabSelectedTextColor="@color/material_on_primary_emphasis_high_type"
-        app:tabTextColor="@color/material_on_primary_emphasis_medium">
+        style="@style/Widget.MaterialComponents.TabLayout.Colored">
 
         <com.google.android.material.tabs.TabItem
             android:id="@+id/tab_order_status_all"
@@ -61,5 +58,8 @@
         android:id="@+id/rv_order"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/tab_order_status" />
+        android:layout_below="@id/tab_order_status"
+        android:clipToPadding="false"
+        android:paddingBottom="128dp" />
+
 </RelativeLayout>
