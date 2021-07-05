@@ -41,4 +41,10 @@
     <string name="checkout">Checkout</string>
     <string name="choose_shipping_service">Pilih Jenis Layanan</string>
     <string name="reload">Muat Ulang</string>
+    <string name="all">Semua</string>
+    <string name="pending">Tertunda</string>
+    <string name="processed">Diproses</string>
+    <string name="shipped">Dikirim</string>
+    <string name="done">Selesai</string>
+    <string name="canceled">Batal</string>
 </resources>

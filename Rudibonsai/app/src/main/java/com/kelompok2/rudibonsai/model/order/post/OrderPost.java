@@ -1,7 +1,8 @@
-package com.kelompok2.rudibonsai.model.order;
+package com.kelompok2.rudibonsai.model.order.post;
+
+import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
-import com.google.gson.annotations.SerializedName;
 
 public class OrderPost{
 
@@ -24,7 +25,7 @@ public class OrderPost{
 	private int grandTotalAmount;
 
 	@SerializedName("order_detail")
-	private List<OrderDetailItem> orderDetail;
+	private List<OrderPostDetailItem> orderDetail;
 
 	public void setProductTotalAmount(int productTotalAmount){
 		this.productTotalAmount = productTotalAmount;
@@ -74,11 +75,11 @@ public class OrderPost{
 		return grandTotalAmount;
 	}
 
-	public void setOrderDetail(List<OrderDetailItem> orderDetail){
+	public void setOrderDetail(List<OrderPostDetailItem> orderDetail){
 		this.orderDetail = orderDetail;
 	}
 
-	public List<OrderDetailItem> getOrderDetail(){
+	public List<OrderPostDetailItem> getOrderDetail(){
 		return orderDetail;
 	}
 }

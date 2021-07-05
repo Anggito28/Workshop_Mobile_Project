@@ -83,3 +83,7 @@ lint/generated/
 lint/outputs/
 lint/tmp/
 # lint/reports/
+
+Rudibonsai/app/src/main/res/xml/network_security_config.xml
+
+Rudibonsai/app/src/main/java/com/kelompok2/rudibonsai/constant/ConstantValue.java

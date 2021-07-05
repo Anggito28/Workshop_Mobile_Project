@@ -1,8 +1,8 @@
-package com.kelompok2.rudibonsai.model.order;
+package com.kelompok2.rudibonsai.model.order.post;
 
 import com.google.gson.annotations.SerializedName;
 
-public class OrderDetailItem{
+public class OrderPostDetailItem {
 
 	@SerializedName("quantity")
 	private int quantity;

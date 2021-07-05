@@ -1,4 +1,4 @@
-package com.kelompok2.rudibonsai.model.cart;
+package com.kelompok2.rudibonsai.model.order.get.detail;
 
 import com.google.gson.annotations.SerializedName;
 

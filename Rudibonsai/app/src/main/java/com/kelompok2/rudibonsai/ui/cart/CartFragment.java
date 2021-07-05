@@ -20,8 +20,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.kelompok2.rudibonsai.R;
 import com.kelompok2.rudibonsai.api.ApiClient;
 import com.kelompok2.rudibonsai.api.CartInterface;
-import com.kelompok2.rudibonsai.model.cart.CartResponse;
-import com.kelompok2.rudibonsai.model.cart.CartsItem;
+import com.kelompok2.rudibonsai.model.cart.get.CartGetResponse;
+import com.kelompok2.rudibonsai.model.cart.get.CartsItem;
 import com.kelompok2.rudibonsai.session.SessionManager;
 import com.kelompok2.rudibonsai.ui.checkout.CheckoutActivity;
 import com.kelompok2.rudibonsai.utils.MyFormatter;
@@ -33,7 +33,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class CartFragment extends Fragment implements CartAdapter.SubtotalListener{
+public class CartFragment extends Fragment implements CartAdapter.ListItemListener {
 
     private RecyclerView recyclerView;
     private CartInterface cartInterface;
@@ -41,7 +41,7 @@ public class CartFragment extends Fragment implements CartAdapter.SubtotalListen
     private ProgressDialog progressDialog;
     private List<CartsItem> cartsItems;
     private ArrayList<Integer> itemQty;
-    private TextView subtotal;
+    private TextView subtotal, cartEmpty;
     private Button btnCheckout, btnReload;
     private CardView cvCheckout;
 
@@ -54,6 +54,7 @@ public class CartFragment extends Fragment implements CartAdapter.SubtotalListen
         btnCheckout = root.findViewById(R.id.btn_cart_checkout);
         cvCheckout = root.findViewById(R.id.cardview_cart_checkout);
         btnReload = root.findViewById(R.id.btn_cart_reload);
+        cartEmpty = root.findViewById(R.id.tv_cart_empty);
 
         cvCheckout.setVisibility(View.INVISIBLE);
         progressDialog = new ProgressDialog(getActivity());
@@ -92,10 +93,10 @@ public class CartFragment extends Fragment implements CartAdapter.SubtotalListen
         progressDialog.show();
 
         cartInterface = ApiClient.getClient().create(CartInterface.class);
-        Call<CartResponse> cartCall = cartInterface.getCarts(token);
-        cartCall.enqueue(new Callback<CartResponse>() {
+        Call<CartGetResponse> cartCall = cartInterface.getCarts(token);
+        cartCall.enqueue(new Callback<CartGetResponse>() {
             @Override
-            public void onResponse(Call<CartResponse> call, Response<CartResponse> response) {
+            public void onResponse(Call<CartGetResponse> call, Response<CartGetResponse> response) {
                 if (!response.isSuccessful()){
                     Log.i("fail", String.valueOf(response));
                     Toast.makeText(getActivity(), "Terjadi kesalahan", Toast.LENGTH_SHORT).show();
@@ -104,13 +105,20 @@ public class CartFragment extends Fragment implements CartAdapter.SubtotalListen
                     return;
                 }
                 progressDialog.dismiss();
-                cvCheckout.setVisibility(View.VISIBLE);
                 btnReload.setVisibility(View.GONE);
 
                 cartsItems = response.body().getCarts();
-                itemQty = populateQty();
 
-                putDataToRecyclerView(cartsItems, itemQty);
+                if (cartsItems.isEmpty()){
+                    cartEmpty.setVisibility(View.VISIBLE);
+                    recyclerView.setVisibility(View.GONE);
+                    cvCheckout.setVisibility(View.GONE);
+                } else {
+                    cvCheckout.setVisibility(View.VISIBLE);
+                    cartEmpty.setVisibility(View.GONE);
+                    itemQty = populateQty();
+                    putDataToRecyclerView(cartsItems, itemQty);
+                }
 
                 Log.i("success", "oke");
 
@@ -118,7 +126,7 @@ public class CartFragment extends Fragment implements CartAdapter.SubtotalListen
             }
 
             @Override
-            public void onFailure(Call<CartResponse> call, Throwable t) {
+            public void onFailure(Call<CartGetResponse> call, Throwable t) {
                 t.printStackTrace();
                 Log.i("failure", "gagal");
                 Toast.makeText(getActivity(), t.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
@@ -153,5 +161,10 @@ public class CartFragment extends Fragment implements CartAdapter.SubtotalListen
     @Override
     public void onQuantityUpdate(int total) {
         btnCheckout.setText("Checkout (" + String.valueOf(total) + ")");
+    }
+
+    @Override
+    public void onCartDelete() {
+        fetchCartItems();
     }
 }
