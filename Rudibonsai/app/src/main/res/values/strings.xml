@@ -47,4 +47,9 @@
     <string name="shipped">Dikirim</string>
     <string name="done">Selesai</string>
     <string name="canceled">Batal</string>
+    <string name="nama_lengkap">Nama Lengkap</string>
+    <string name="laki_laki">Laki - laki</string>
+    <string name="perempuan">Perempuan</string>
+    <string name="nomor_telp">Nomor Telepon</string>
+    <string name="jenis_kelamin">Jenis Kelamin</string>
 </resources>
