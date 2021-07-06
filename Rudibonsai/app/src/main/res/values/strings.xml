@@ -52,4 +52,14 @@
     <string name="perempuan">Perempuan</string>
     <string name="nomor_telp">Nomor Telepon</string>
     <string name="jenis_kelamin">Jenis Kelamin</string>
+    <string name="provinsi">provinsi</string>
+    <string name="show_prov">Pilih Provinsi</string>
+    <string name="kabupaten">Kabupaten</string>
+    <string name="kecamatan">Kecamatan</string>
+    <string name="detail_address">Detail Alamat</string>
+    <string name="submit">Daftar Akun</string>
+    <string name="red_akun">Sudah punya akun?</string>
+    <string name="masuk">Log In</string>
+    <string name="bold">bold</string>
+    <string name="number">number</string>
 </resources>
