@@ -41,6 +41,7 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textInputLayout3"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
@@ -52,6 +53,20 @@
             android:id="@+id/et_register_password_confirm"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/password_confirm" />
+            android:hint="@string/password_confirm"
+            android:inputType="textPassword" />
     </com.google.android.material.textfield.TextInputLayout>
+
+    <Button
+        android:id="@+id/btn_next"
+        android:layout_width="156dp"
+        android:layout_height="52dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginBottom="377dp"
+        android:text="Next"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textInputLayout3" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
