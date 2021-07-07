@@ -3,16 +3,20 @@ package com.kelompok2.rudibonsai.api;
 import com.google.gson.JsonElement;
 import com.kelompok2.rudibonsai.model.order.get.OrderGetResponseItem;
 import com.kelompok2.rudibonsai.model.order.get.detail.OrderDetail;
+import com.kelompok2.rudibonsai.model.order.payment.OrderPaymentUploadResponse;
 import com.kelompok2.rudibonsai.model.order.post.OrderPost;
 
 import java.util.List;
 
+import okhttp3.MultipartBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Headers;
+import retrofit2.http.Multipart;
 import retrofit2.http.POST;
+import retrofit2.http.Part;
 import retrofit2.http.Path;
 
 public interface OrderInterface {
@@ -35,5 +39,14 @@ public interface OrderInterface {
     Call<OrderDetail> getOrderDetail(
             @Header("Authorization") String token,
             @Path("id") int id
+    );
+
+    @Multipart
+    @Headers("Accept: application/json")
+    @POST("orders/{id}/payment-proof")
+    Call<OrderPaymentUploadResponse> uploadPayment(
+            @Header("Authorization") String token,
+            @Path("id") int id,
+            @Part() MultipartBody.Part payment_proof
     );
 }
