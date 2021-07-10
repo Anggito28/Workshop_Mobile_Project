@@ -1,7 +1,9 @@
 package com.kelompok2.rudibonsai.ui.cart;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -116,34 +118,58 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViewHolder> 
         holder.btnDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                holder.loading.show();
-                sessionManager = new SessionManager(mContext);
-                String token = "Bearer " + sessionManager.getTOKEN();
+                holder.builder.setMessage("Anda yakin ingin menghapus item ini?");
+                holder.builder.setCancelable(false);
 
-                CartInterface deleteCart = ApiClient.getClient().create(CartInterface.class);
-                Call<CartDeleteResponse> cartDeleteCall = deleteCart.deleteCart(token, mData.get(position).getId());
-                cartDeleteCall.enqueue(new Callback<CartDeleteResponse>() {
+                holder.builder.setPositiveButton("Hapus", new DialogInterface.OnClickListener() {
                     @Override
-                    public void onResponse(Call<CartDeleteResponse> call, Response<CartDeleteResponse> response) {
-                        if (!response.isSuccessful()){
-                            holder.loading.dismiss();
-                            Toast.makeText(mContext, "Terjadi kesalahan", Toast.LENGTH_SHORT).show();
-                            return;
-                        }
-                        holder.loading.dismiss();
-
-                        listItemListener.onCartDelete();
-
-                        Toast.makeText(mContext, response.body().getMessage(), Toast.LENGTH_SHORT).show();
-                    }
-
-                    @Override
-                    public void onFailure(Call<CartDeleteResponse> call, Throwable t) {
-                        holder.loading.dismiss();
-                        t.printStackTrace();
-                        Toast.makeText(mContext, t.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                    public void onClick(DialogInterface dialog, int which) {
+                        deleteCart(holder, position);
                     }
                 });
+
+                holder.builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+
+                holder.deleteCartDialog = holder.builder.create();
+
+                holder.deleteCartDialog.show();
+            }
+        });
+    }
+
+
+    private void deleteCart(MyViewHolder holder, int position) {
+        holder.loading.show();
+        sessionManager = new SessionManager(mContext);
+        String token = "Bearer " + sessionManager.getTOKEN();
+
+        CartInterface deleteCart = ApiClient.getClient().create(CartInterface.class);
+        Call<CartDeleteResponse> cartDeleteCall = deleteCart.deleteCart(token, mData.get(position).getId());
+        cartDeleteCall.enqueue(new Callback<CartDeleteResponse>() {
+            @Override
+            public void onResponse(Call<CartDeleteResponse> call, Response<CartDeleteResponse> response) {
+                if (!response.isSuccessful()){
+                    holder.loading.dismiss();
+                    Toast.makeText(mContext, "Terjadi kesalahan", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                holder.loading.dismiss();
+
+                listItemListener.onCartDelete();
+
+                Toast.makeText(mContext, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onFailure(Call<CartDeleteResponse> call, Throwable t) {
+                holder.loading.dismiss();
+                t.printStackTrace();
+                Toast.makeText(mContext, t.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -216,6 +242,8 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViewHolder> 
         EditText etQuantity;
         ImageButton btnDelete;
         ProgressDialog loading;
+        AlertDialog.Builder builder;
+        AlertDialog deleteCartDialog;
 
         public MyViewHolder(@NonNull @NotNull View itemView) {
             super(itemView);
@@ -227,6 +255,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViewHolder> 
             etQuantity = itemView.findViewById(R.id.et_quantity);
             btnDelete = itemView.findViewById(R.id.btn_cart_delete);
             loading = new ProgressDialog(mContext);
+            builder = new AlertDialog.Builder(mContext);
 
             loading.setCancelable(false);
             loading.setMessage("Memuat...");
