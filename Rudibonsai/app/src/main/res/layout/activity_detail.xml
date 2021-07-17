@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".detail">
+    tools:context=".ui.produk.detail">
 
     <TextView
         android:id="@+id/atas"
@@ -86,7 +86,7 @@
         android:layout_marginRight="15dp"
         />
     <Button
-        android:id="@+id/button"
+        android:id="@+id/button1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/dua"
