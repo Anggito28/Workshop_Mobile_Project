@@ -62,4 +62,7 @@
     <string name="masuk">Log In</string>
     <string name="bold">bold</string>
     <string name="number">number</string>
+    <string name="pilihprov">Pilih Provinsi</string>
+    <string name="pilihkab">Pilih Kabupaten</string>
+    <string name="pilkec">Pilih Kecamatan</string>
 </resources>
