@@ -1,10 +1,12 @@
 package com.kelompok2.rudibonsai.ui.home;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -15,6 +17,7 @@ import com.kelompok2.rudibonsai.R;
 import com.kelompok2.rudibonsai.constant.ConstantValue;
 import com.kelompok2.rudibonsai.model.product.DataItem;
 import com.kelompok2.rudibonsai.model.product.ProductImagesItem;
+import com.kelompok2.rudibonsai.ui.product.ProductDetailActivity;
 import com.kelompok2.rudibonsai.utils.MyFormatter;
 
 import org.jetbrains.annotations.NotNull;
@@ -55,6 +58,15 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.HomeView
         String height = String.valueOf(mData.get(position).getHeight()) + "cm";
 
         String dimension = length + width + height;
+
+        holder.mainLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(mContext, ProductDetailActivity.class);
+                intent.putExtra("product_id", mData.get(position).getId());
+                mContext.startActivity(intent);
+            }
+        });
     }
 
     private void setProductImage(HomeViewHolder holder, int position) {
@@ -83,6 +95,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.HomeView
 
         ImageView ivProduct;
         TextView tvTitle, tvDimension, tvPrice;
+        LinearLayout mainLayout;
 
         public HomeViewHolder(@NonNull @NotNull View itemView) {
             super(itemView);
@@ -91,6 +104,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.HomeView
             tvTitle = itemView.findViewById(R.id.tv_title_card_item_product);
             tvDimension = itemView.findViewById(R.id.tv_dimension_card_item_product);
             tvPrice = itemView.findViewById(R.id.tv_price_card_item_product);
+            mainLayout = itemView.findViewById(R.id.card_item_product_layout);
         }
     }
 }

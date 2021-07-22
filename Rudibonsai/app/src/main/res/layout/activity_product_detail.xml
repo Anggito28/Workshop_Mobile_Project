@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".ui.product.ProductDetailActivity">
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/btn_product_detail_add_to_cart"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_product_detail_imgs"
+                android:layout_width="match_parent"
+                android:layout_height="220dp">
+
+            </androidx.recyclerview.widget.RecyclerView>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:paddingLeft="16dp"
+                android:paddingTop="8dp"
+                android:paddingRight="16dp"
+                android:paddingBottom="16dp">
+
+                <TextView
+                    android:id="@+id/tv_product_detail_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Judul Produk"
+                    android:textAppearance="@style/TextAppearance.MdcTypographyStyles.Subtitle1" />
+
+                <TextView
+                    android:id="@+id/tv_product_detail_price"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:text="Rp 0"
+                    android:textAppearance="@style/TextAppearance.MdcTypographyStyles.Subtitle1"
+                    android:textColor="@color/green_700" />
+
+                <TextView
+                    android:id="@+id/tv_product_detail_stock"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:text="Stok : 0"
+                    android:textAppearance="@style/TextAppearance.MdcTypographyStyles.Caption"
+                    android:textColor="@color/material_on_surface_emphasis_medium" />
+
+                <TextView
+                    android:id="@+id/tv_product_detail_dimension"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Dimension : "
+                    android:textAppearance="@style/TextAppearance.MdcTypographyStyles.Caption"
+                    android:textColor="@color/material_on_surface_emphasis_medium" />
+
+                <TextView
+                    android:id="@+id/tv_product_detail_weight"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Berat : "
+                    android:textAppearance="@style/TextAppearance.MdcTypographyStyles.Caption"
+                    android:textColor="@color/material_on_surface_emphasis_medium" />
+
+                <TextView
+                    android:id="@+id/tv_product_detail_category"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:text="Kategori"
+                    android:textAppearance="@style/TextAppearance.MdcTypographyStyles.Caption"
+                    android:textColor="@color/green_700" />
+
+                <TextView
+                    android:id="@+id/tv_product_detail_desc"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:text="@string/product_desc"
+                    android:textAppearance="@style/TextAppearance.MdcTypographyStyles.Body2" />
+
+            </LinearLayout>
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+    <Button
+        android:id="@+id/btn_product_detail_add_to_cart"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="16dp"
+        android:text="tambah keranjang" />
+
+</RelativeLayout>

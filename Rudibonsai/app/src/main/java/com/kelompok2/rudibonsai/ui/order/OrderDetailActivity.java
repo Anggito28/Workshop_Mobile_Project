@@ -104,8 +104,6 @@ public class OrderDetailActivity extends AppCompatActivity {
         btnUpload = findViewById(R.id.btn_order_detail_upload);
         expAt = findViewById(R.id.tv_order_detail_exp_at);
 
-        btnUpload.setEnabled(false);
-
         Intent intent = getIntent();
         int orderId = intent.getIntExtra("order_id", 0);
 
@@ -200,7 +198,7 @@ public class OrderDetailActivity extends AppCompatActivity {
                     try {
                         imgPath = ContentUriUtils.INSTANCE.getFilePath(OrderDetailActivity.this, selectedImg);
 
-                        Toast.makeText(this, imgPath, Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(this, imgPath, Toast.LENGTH_SHORT).show();
                     } catch (URISyntaxException e) {
                         e.printStackTrace();
                     }
@@ -217,6 +215,8 @@ public class OrderDetailActivity extends AppCompatActivity {
     private void fetchOrderDetail(int orderId) {
         loading.setMessage("Memuat...");
         loading.show();
+
+        btnUpload.setEnabled(false);
 
         Call<OrderDetail> orderDetailCall = orderInterface.getOrderDetail(token, orderId);
         orderDetailCall.enqueue(new Callback<OrderDetail>() {
