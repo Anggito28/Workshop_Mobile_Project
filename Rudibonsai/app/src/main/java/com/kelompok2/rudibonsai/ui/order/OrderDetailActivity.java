@@ -38,7 +38,11 @@ import com.kelompok2.rudibonsai.utils.MyFormatter;
 import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 
 import droidninja.filepicker.utils.ContentUriUtils;
 import okhttp3.MediaType;
@@ -99,8 +103,6 @@ public class OrderDetailActivity extends AppCompatActivity {
         ivChooseImg = findViewById(R.id.iv_order_detail_choose_img);
         btnUpload = findViewById(R.id.btn_order_detail_upload);
         expAt = findViewById(R.id.tv_order_detail_exp_at);
-
-        btnUpload.setEnabled(false);
 
         Intent intent = getIntent();
         int orderId = intent.getIntExtra("order_id", 0);
@@ -196,7 +198,7 @@ public class OrderDetailActivity extends AppCompatActivity {
                     try {
                         imgPath = ContentUriUtils.INSTANCE.getFilePath(OrderDetailActivity.this, selectedImg);
 
-                        Toast.makeText(this, imgPath, Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(this, imgPath, Toast.LENGTH_SHORT).show();
                     } catch (URISyntaxException e) {
                         e.printStackTrace();
                     }
@@ -213,6 +215,8 @@ public class OrderDetailActivity extends AppCompatActivity {
     private void fetchOrderDetail(int orderId) {
         loading.setMessage("Memuat...");
         loading.show();
+
+        btnUpload.setEnabled(false);
 
         Call<OrderDetail> orderDetailCall = orderInterface.getOrderDetail(token, orderId);
         orderDetailCall.enqueue(new Callback<OrderDetail>() {
@@ -283,29 +287,30 @@ public class OrderDetailActivity extends AppCompatActivity {
 
         expAt.setText(expDateStr);
 
-//        SimpleDateFormat dateTimeInput = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-//        SimpleDateFormat dateOutput = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
-//        dateOutput.setTimeZone(TimeZone.getTimeZone("GMT+7"));
-//
-//        Date expDate = null;
-//
-//        try
-//        {
-//            expDate = dateTimeInput.parse(expDateStr);
-//        }
-//        catch (ParseException e)
-//        {
-//            e.printStackTrace();
-//        }
-//
-//        Log.i("date_str", order.getExpiredAt());
-//        Log.i("date_exp", String.valueOf(expDate));
-//        Log.i("date_exp_out", dateOutput.format(expDate));
-//
-//        if (new Date().after(expDate)){
-//            btnUpload.setVisibility(View.GONE);
-//            ivChooseImg.setOnClickListener(null);
-//        }
+        checkExpDate(expDateStr);
+
+    }
+
+    private void checkExpDate(String expDateStr) {
+        SimpleDateFormat dateTimeInput = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        SimpleDateFormat dateOutput = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+        dateOutput.setTimeZone(TimeZone.getTimeZone("GMT+7"));
+
+        Date expDate = null;
+
+        try
+        {
+            expDate = dateTimeInput.parse(expDateStr);
+        }
+        catch (ParseException e)
+        {
+            e.printStackTrace();
+        }
+
+        if (new Date().after(expDate)){
+            btnUpload.setVisibility(View.GONE);
+            ivChooseImg.setOnClickListener(null);
+        }
 
     }
 

@@ -15,7 +15,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Rudibonsai">
-        <activity android:name=".detail"></activity>
+        <activity android:name=".ui.product.ProductDetailActivity"></activity>
+        <activity android:name=".detail" />
         <activity android:name=".ui.register.RegisterActivitySecond" />
         <activity android:name=".ui.order.OrderDetailActivity" />
         <activity android:name=".ui.checkout.CheckoutResponseActivity" />
