@@ -38,7 +38,11 @@ import com.kelompok2.rudibonsai.utils.MyFormatter;
 import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 
 import droidninja.filepicker.utils.ContentUriUtils;
 import okhttp3.MediaType;
@@ -283,29 +287,30 @@ public class OrderDetailActivity extends AppCompatActivity {
 
         expAt.setText(expDateStr);
 
-//        SimpleDateFormat dateTimeInput = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-//        SimpleDateFormat dateOutput = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
-//        dateOutput.setTimeZone(TimeZone.getTimeZone("GMT+7"));
-//
-//        Date expDate = null;
-//
-//        try
-//        {
-//            expDate = dateTimeInput.parse(expDateStr);
-//        }
-//        catch (ParseException e)
-//        {
-//            e.printStackTrace();
-//        }
-//
-//        Log.i("date_str", order.getExpiredAt());
-//        Log.i("date_exp", String.valueOf(expDate));
-//        Log.i("date_exp_out", dateOutput.format(expDate));
-//
-//        if (new Date().after(expDate)){
-//            btnUpload.setVisibility(View.GONE);
-//            ivChooseImg.setOnClickListener(null);
-//        }
+        checkExpDate(expDateStr);
+
+    }
+
+    private void checkExpDate(String expDateStr) {
+        SimpleDateFormat dateTimeInput = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        SimpleDateFormat dateOutput = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+        dateOutput.setTimeZone(TimeZone.getTimeZone("GMT+7"));
+
+        Date expDate = null;
+
+        try
+        {
+            expDate = dateTimeInput.parse(expDateStr);
+        }
+        catch (ParseException e)
+        {
+            e.printStackTrace();
+        }
+
+        if (new Date().after(expDate)){
+            btnUpload.setVisibility(View.GONE);
+            ivChooseImg.setOnClickListener(null);
+        }
 
     }
 

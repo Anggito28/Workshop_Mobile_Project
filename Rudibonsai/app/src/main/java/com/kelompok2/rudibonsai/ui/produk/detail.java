@@ -11,8 +11,6 @@ import android.widget.TextView;
 
 import com.kelompok2.rudibonsai.R;
 import com.kelompok2.rudibonsai.model.cart.get.CartsItem;
-import com.kelompok2.rudibonsai.ui.checkout.CheckoutActivity;
-import com.kelompok2.rudibonsai.ui.home.HomeViewModel;
 
 public class detail extends AppCompatActivity {
 

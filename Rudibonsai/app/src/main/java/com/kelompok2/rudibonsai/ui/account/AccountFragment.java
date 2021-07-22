@@ -6,8 +6,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -23,8 +21,6 @@ import com.kelompok2.rudibonsai.constant.ConstantValue;
 import com.kelompok2.rudibonsai.session.SessionManager;
 import com.kelompok2.rudibonsai.ui.login.LoginActivity;
 
-import org.jetbrains.annotations.NotNull;
-
 public class AccountFragment extends Fragment {
     ImageView ivUserPicture;
     TextView tvFullname, tvEmail, tvPhone, tvGender, tvProvince, tvCity, tvSubdistrict, tvDetailAddress;
@@ -35,7 +31,7 @@ public class AccountFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_account, container, false);
-        setHasOptionsMenu(true);
+//        setHasOptionsMenu(true);
 
         ivUserPicture = root.findViewById(R.id.iv_account_picture);
         tvFullname = root.findViewById(R.id.tv_account_fullname);
@@ -117,9 +113,9 @@ public class AccountFragment extends Fragment {
         }
     }
 
-    @Override
-    public void onCreateOptionsMenu(@NonNull @NotNull Menu menu, @NonNull @NotNull MenuInflater inflater) {
-        inflater.inflate(R.menu.account_action_menu, menu);
-        super.onCreateOptionsMenu(menu, inflater);
-    }
+//    @Override
+//    public void onCreateOptionsMenu(@NonNull @NotNull Menu menu, @NonNull @NotNull MenuInflater inflater) {
+//        inflater.inflate(R.menu.account_action_menu, menu);
+//        super.onCreateOptionsMenu(menu, inflater);
+//    }
 }
