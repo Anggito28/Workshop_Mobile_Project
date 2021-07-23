@@ -8,5 +8,6 @@ public class ConstantValueSample {
 //
 //    - File "ConstantValueSample" JANGAN DIHAPUS DAN JANGAN DIUBAH!!!
 
-    public static final String BASE_URL = "http://IP_ADDRESS/api/";
+    public static final String DOMAIN = "http://IP_ADDRESS";
+    public static final String BASE_URL = DOMAIN + "/api/";
 }

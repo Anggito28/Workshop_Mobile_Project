@@ -74,6 +74,8 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="4dp"
             android:layout_weight="1"
+            android:background="?android:attr/selectableItemBackground"
+            android:clickable="true"
             android:text="@string/register"
             android:textAppearance="@style/TextAppearance.MdcTypographyStyles.Body1"
             android:textColor="@color/green_500"

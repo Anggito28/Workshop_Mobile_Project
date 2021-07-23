@@ -23,7 +23,7 @@ import com.kelompok2.rudibonsai.model.login.LoginData;
 import com.kelompok2.rudibonsai.model.login.LoginError;
 import com.kelompok2.rudibonsai.model.login.LoginSuccess;
 import com.kelompok2.rudibonsai.session.SessionManager;
-import com.kelompok2.rudibonsai.ui.register.RegisterActivity;
+import com.kelompok2.rudibonsai.ui.register.RegisterWebViewActivity;
 
 import java.io.IOException;
 
@@ -46,6 +46,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        sessionManager = new SessionManager(LoginActivity.this);
+
         actionBar = getSupportActionBar();
         actionBar.setTitle(R.string.login);
 
@@ -61,6 +64,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         btnLogin.setOnClickListener(this);
         linkRegister.setOnClickListener(this);
+    }
+
+    private void moveToMain() {
+        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NO_HISTORY);
+        startActivity(intent);
+        finish();
     }
 
     @Override
@@ -84,7 +94,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
     private void moveToRegister() {
-        Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
+        Intent intent = new Intent(LoginActivity.this, RegisterWebViewActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NO_HISTORY);
         startActivity(intent);
         finish();
     }
@@ -100,14 +111,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     LoginSuccess loginSuccess = new Gson().fromJson(res.getAsJsonObject(), LoginSuccess.class);
                     LoginData loginData = loginSuccess.getData();
 
-                    sessionManager = new SessionManager(LoginActivity.this);
+//                    sessionManager = new SessionManager(LoginActivity.this);
                     sessionManager.createLoginSession(loginData);
 
                     loading.dismiss();
 
-                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                    startActivity(intent);
-                    finish();
+                    moveToMain();
 
                 } else {
                     
